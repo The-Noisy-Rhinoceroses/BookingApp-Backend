@@ -17,12 +17,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
 // Connection URL
-const url = `mongodb://${process.env.MONGOUSER}:${
+const url = `mongodb://${process.env.MONGO_USER}:${
   process.env.MONGO_PASSWORD
 }${process.env.URL}`;
 
@@ -36,6 +35,7 @@ MongoClient.connect(
     assert.equal(null, err);
     console.log('Connected successfully to server');
     const db = client.db(dbName);
+    // TODO DELETE LATER
     //   db.collection('Barbers').insertOne({
     //     "name" : "Richard",
     //     "age" : 16
