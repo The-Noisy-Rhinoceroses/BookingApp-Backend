@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const indexRouter = express.Router();
+const barberRouter = require('./barbers');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const apiRoutes = (indexRouter, barberRouter) => (db) => {
+  indexRouter.use('/barbers', barberRouter(db));
+  return indexRouter;
+}
 
-module.exports = router;
+module.exports = apiRoutes(indexRouter, barberRouter);
