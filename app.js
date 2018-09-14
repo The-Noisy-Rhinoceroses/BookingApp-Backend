@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const barbersRouter = require("./routes/barbers");
 const app = express();
 
 app.use(logger('dev'));
@@ -35,13 +36,7 @@ MongoClient.connect(
     assert.equal(null, err);
     console.log('Connected successfully to server');
     const db = client.db(dbName);
-    // TODO DELETE LATER
-    //   db.collection('Barbers').insertOne({
-    //     "name" : "Richard",
-    //     "age" : 16
-    //     })
-
-    client.close();
+    app.use("/barbers", barbersRouter(db));
   }
 );
 
