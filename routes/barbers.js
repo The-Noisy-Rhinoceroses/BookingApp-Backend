@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* GET barbers listing. */
 const barberRoutes = (router) => (db) => {
   router.get('/', function(req, res, next) {
-    db.collection("Barbers")
+    db.collection('Barbers')
     .find()
     .toArray()
     .then(barbers => res.json(barbers))
