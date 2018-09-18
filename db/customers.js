@@ -1,3 +1,4 @@
+// schema
 db.createCollection('customers', {
   validator: {
     $jsonSchema: {
