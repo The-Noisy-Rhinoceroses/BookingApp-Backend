@@ -14,8 +14,8 @@ const getAppointmentsByDay = (db, formattedDate) => {
 
 // Query for the appointments within a given week or month;
 const getAppointmentsByTimePeriod = (db, date, timePeriod) => {
-  let startDate = moment(date, 'YYYY-MM-DD').startOf(timePeriod);
-  let endDate = moment(date, 'YYYY-MM-DD').endOf(timePeriod);
+  let startDate = moment(date, 'MM-DD-YYYY').startOf(timePeriod);
+  let endDate = moment(date, 'MM-DD-YYYY').endOf(timePeriod);
 
   return db.collection('appointments')
     .find({

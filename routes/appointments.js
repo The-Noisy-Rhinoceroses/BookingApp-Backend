@@ -6,7 +6,7 @@ const { getAppointmentsByDay, getAppointmentsByTimePeriod } = require('../utilit
 const appointmentRouter = router => db => {
   router.get('/day', (req, res, next) => {
     let { date } = req.query;
-    let formattedDate = moment(date, 'YYYY-MM-DD');
+    let formattedDate = moment(date, 'MM-DD-YYYY');
 
     getAppointmentsByDay(db, formattedDate)
       .then(appointments => res.json(appointments))
