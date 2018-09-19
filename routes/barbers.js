@@ -17,7 +17,10 @@ const barberRoutes = (router) => (db) => {
     db.collection('barbers')
       .find({ _id: targetId })
       .toArray()
-      .then(singleBarber => res.status(200).json(singleBarber))
+      .then(singleBarber => {
+        if (!singleBarber.length) res.status(404).send('Not Found')
+        else res.status(200).json(singleBarber)
+      })
       .catch(next);
   });
 
