@@ -32,6 +32,14 @@ const barberRoutes = (router) => (db) => {
       .catch(next);
   });
 
+  router.delete('/:barberId', (req, res, next) => {
+    const { barberId } = req.params;
+    db.collection('barbers')
+      .deleteOne({ _id: ObjectId(barberId) })
+      .then(() => res.status(200).send())
+      .catch(next);
+  });
+
   return router;
 };
 
