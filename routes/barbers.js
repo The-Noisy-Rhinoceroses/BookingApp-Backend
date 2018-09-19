@@ -11,11 +11,10 @@ const barberRoutes = (router) => (db) => {
       .catch(next);
   });
 
-  router.get('/:id', function(req, res, next) {
-    const {id} = req.params;
-    const barberId = ObjectId(id);
+  router.get('/:barberId', function(req, res, next) {
+    let { barberId } = req.params;
     db.collection('barbers')
-      .find({ _id: barberId })
+      .find({ _id: ObjectId(barberId) })
       .toArray()
       .then(singleBarber => {
         if (!singleBarber.length) res.status(404).send('Not Found')
@@ -25,26 +24,26 @@ const barberRoutes = (router) => (db) => {
   });
 
   router.post('/', (req, res, next) => {
-    const { name } = req.body;
+    let { name } = req.body;
     db.collection('barbers')
       .insertOne({ name })
       .then(newBarber => res.status(201).json(newBarber))
       .catch(next);
   });
 
-  router.put('/:id', (req, res, next) => {
-    const barberId = ObjectId(req.params.id);
-    const { name } = req.body;
+  router.put('/:barberId', (req, res, next) => {
+    let { barberId } = req.params;
+    let { name } = req.body;
     db.collection('barbers')
-      .updateOne({ _id: barberId }, { $set: { name } })
+      .updateOne({ _id: ObjectId(barberId) }, { $set: { name } })
       .then(updatedBarber => res.status(201).json(updatedBarber))
       .catch(next);
   });
 
-  router.delete('/:id', (req, res, next) => {
-    const barberId = ObjectId(req.params.id);
+  router.delete('/:barberId', (req, res, next) => {
+    let { barberId } = req.params;
     db.collection('barbers')
-      .deleteOne({ _id: barberId })
+      .deleteOne({ _id: ObjectId(barberId) })
       .then(() => res.status(200).send())
       .catch(next);
   });

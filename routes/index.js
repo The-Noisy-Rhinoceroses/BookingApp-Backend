@@ -1,5 +1,7 @@
 const express = require('express');
 const indexRouter = express.Router();
+
+// Other routers;
 const barberRouter = require('./barbers');
 const customerRouter = require('./customers');
 const appointmentRouter = require('./appointments');
