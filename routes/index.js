@@ -8,6 +8,13 @@ const apiRoutes = (indexRouter, barberRouter, customerRouter, appointmentRouter)
   indexRouter.use('/barbers', barberRouter(db));
   indexRouter.use('/customers', customerRouter(db));
   indexRouter.use('/appointments', appointmentRouter(db));
+
+  indexRouter.use((req, res, next) => {
+    const error = new Error('Not Found');
+    error.status = 404;
+    next(error);
+  });
+
   return indexRouter;
 }
 
