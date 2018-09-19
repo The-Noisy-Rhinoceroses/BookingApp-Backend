@@ -12,8 +12,8 @@ const barberRoutes = (router) => (db) => {
   });
 
   router.get('/:id', function(req, res, next) {
-    const barberId = req.params.id;
-    const barberId = ObjectId(barberId);
+    const {id} = req.params;
+    const barberId = ObjectId(id);
     db.collection('barbers')
       .find({ _id: barberId })
       .toArray()
