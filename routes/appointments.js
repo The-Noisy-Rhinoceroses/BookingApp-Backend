@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment');
 const { ObjectId } = require('mongodb');
-const { getAppointmentsByDay, getAppointmentsByTimePeriod } = require('../utilities/utils');
+const {
+  getAppointmentsByDay,
+  getAppointmentsByTimePeriod
+} = require('../utilities/utils');
 
 const appointmentRouter = router => db => {
   router.get('/day', (req, res, next) => {
@@ -24,6 +27,14 @@ const appointmentRouter = router => db => {
     const { date } = req.query;
     getAppointmentsByTimePeriod(db, date, 'month')
       .then(appointments => res.status(200).json(appointments))
+      .catch(next);
+  });
+
+  router.post('/', (req, res, next) => {
+    const { customerId, appointmentDate } = req.body;
+    db.collection('appointments')
+      .insertOne({ customerId, date: new Date(appointmentDate), barberId: '1' })
+      .then(() => res.sendStatus(201))
       .catch(next);
   });
 
