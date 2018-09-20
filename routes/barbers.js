@@ -12,7 +12,7 @@ const barberRoutes = (router) => (db) => {
   });
 
   router.get('/:barberId', function(req, res, next) {
-    let { barberId } = req.params;
+    const { barberId } = req.params;
     db.collection('barbers')
       .find({ _id: ObjectId(barberId) })
       .toArray()
@@ -24,7 +24,7 @@ const barberRoutes = (router) => (db) => {
   });
 
   router.post('/', (req, res, next) => {
-    let { name } = req.body;
+    const { name } = req.body;
     db.collection('barbers')
       .insertOne({ name })
       .then(newBarber => res.status(201).json(newBarber))
@@ -32,8 +32,8 @@ const barberRoutes = (router) => (db) => {
   });
 
   router.put('/:barberId', (req, res, next) => {
-    let { barberId } = req.params;
-    let { name } = req.body;
+    const { barberId } = req.params;
+    const { name } = req.body;
     db.collection('barbers')
       .updateOne({ _id: ObjectId(barberId) }, { $set: { name } })
       .then(updatedBarber => res.status(201).json(updatedBarber))
@@ -41,7 +41,7 @@ const barberRoutes = (router) => (db) => {
   });
 
   router.delete('/:barberId', (req, res, next) => {
-    let { barberId } = req.params;
+    const { barberId } = req.params;
     db.collection('barbers')
       .deleteOne({ _id: ObjectId(barberId) })
       .then(() => res.status(200).send())
