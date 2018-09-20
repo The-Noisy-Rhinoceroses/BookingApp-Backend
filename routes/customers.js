@@ -14,7 +14,7 @@ const customerRoutes = (router) => (db) => {
     const { firstName, lastName, phoneNumber, email } = req.body;
     db.collection('customers')
       .insertOne({ firstName, lastName, phoneNumber, email })
-      .then(newCustomer => res.status(200).json(newCustomer))
+      .then(newCustomer => res.status(201).json(newCustomer.insertedId))
       .catch(next);
   });
 
