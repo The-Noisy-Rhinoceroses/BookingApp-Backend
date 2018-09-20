@@ -24,10 +24,11 @@ const barberRoutes = (router) => (db) => {
   });
 
   router.post('/', (req, res, next) => {
-    const { name } = req.body;
+    const { firstName, lastName, email, phoneNumber } = req.body;
+    const imgUrl = req.body.imgUrl || '';
     db.collection('barbers')
-      .insertOne({ name })
-      .then(newBarber => res.status(201).json(newBarber))
+      .insertOne({ firstName, lastName, email, imgUrl, phoneNumber })
+      .then(() => res.status(201).send('Barber Created'))
       .catch(next);
   });
 
