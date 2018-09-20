@@ -7,6 +7,10 @@ const barberRoutes = (router) => (db) => {
     db.collection('barbers')
       .find()
       .toArray()
+      .then(newBarbers => newBarbers.map(elem => {
+        const {firstName, lastName, imgUrl, _id} = elem;
+        return {firstName, lastName, imgUrl, _id};
+      }))
       .then(barbers => res.status(200).json(barbers))
       .catch(next);
   });
