@@ -29,9 +29,9 @@ const appointmentRouter = router => db => {
   });
 
   router.post('/', (req, res, next) => {
-    const { customerId, appointmentDate, firstName, lastName, email } = req.body;
+    const { barberId, customerId, appointmentDate, firstName, lastName, email } = req.body;
     db.collection('appointments')
-      .insertOne({ customerId, date: new Date(appointmentDate), barberId: '1' })
+      .insertOne({ barberId, customerId, date: new Date(appointmentDate) })
       .then(() => {
         res.sendStatus(201)
         sendEmail({firstName, lastName, email, appointmentDate});
