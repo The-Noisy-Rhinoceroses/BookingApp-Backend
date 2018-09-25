@@ -10,7 +10,7 @@ db.createCollection('appointments', {
           description: 'must be a string and is required'
         },
         barberId: {
-          bsonType: 'string',
+          bsonType: 'objectId',
           description: 'must be a string and is required'
         },  
         date: {
