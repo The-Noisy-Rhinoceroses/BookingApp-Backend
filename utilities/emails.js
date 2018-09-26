@@ -13,12 +13,12 @@ const getResponse = function(error, info) {
   error ? console.log(error) : console.log('Email sent: ' + info.response);
 };
 
-const sendEmail = function(customer) {
+const sendEmail = function(customer, barber) {
   const mailOptions = {
     from: process.env.BOOKING_APP_EMAIL_ACCOUNT,
     to: customer.email,
-    subject: 'Confirmation from BookingApp: You set up an appointment!',
-    text: `Hello ${customer.firstName} ${customer.lastName}!\nYou are receiving this e-mail as a friendly reminder that you set up an appointment on our platform for ${moment(customer.appointmentDate).format("dddd, MMMM Do YYYY, h:mm a")}!\nBest, The Team at BookingApp`
+    subject: 'Haircut Appointment Confirmation From Rezi!',
+    text: `Hello, ${customer.firstName} ${customer.lastName}!\n\nYou are receiving this e-mail as a friendly reminder that you set up an appointment on Rezi for ${moment(customer.appointmentDate).format("dddd, MMMM Do YYYY, h:mm a")} with our barber ${barber.barberFirstName} ${barber.barberLastName}!\n\nBest, The Team at Rezi`
   };
 
   transporter.sendMail(mailOptions, getResponse);
