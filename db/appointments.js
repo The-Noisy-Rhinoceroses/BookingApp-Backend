@@ -6,13 +6,13 @@ db.createCollection('appointments', {
       required: ['customerId', 'barberId', 'date'],
       properties: {
         customerId: {
-          bsonType: 'string',
-          description: 'must be a string and is required'
+          bsonType: 'objectId',
+          description: 'must be an objectId and is required'
         },
         barberId: {
           bsonType: 'objectId',
-          description: 'must be a string and is required'
-        },  
+          description: 'must be an objectId and is required'
+        },
         date: {
           bsonType: 'date',
           description: 'must be a date and is required'

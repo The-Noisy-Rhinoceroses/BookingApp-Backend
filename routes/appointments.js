@@ -40,8 +40,10 @@ const appointmentRouter = router => db => {
       lastName,
       email
     } = req.body;
+
     const objectBarberId = ObjectId(barberId);
     const objectCustomerId = ObjectId(customerId);
+
     db.collection('appointments')
       .insertOne({
         barberId: objectBarberId,
