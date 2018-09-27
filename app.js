@@ -7,12 +7,15 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const assert = require('assert');
+const helmet = require('helmet');
 
 // Instantiate our application with Express and require in our API Router;
 const apiRouter = require('./routes/index');
 const app = express();
 
 // Middleware;
+
+app.use(helmet())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
