@@ -1,13 +1,15 @@
 // Grab environment variables;
 require('./secrets');
 
+// Module dependencies;
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const assert = require('assert');
 
-const indexRouter = require('./routes/index');
+// Instantiate our application with Express and require in our API Router;
+const apiRouter = require('./routes/index');
 const app = express();
 
 // Middleware;
@@ -20,23 +22,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Create a new MongoClient instance;
 const MongoClient = require('mongodb').MongoClient;
 
-// Connection URL
+// Connection URL;
 const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}${process.env.URL}`;
 
-// Database Name
+// Database Name;
 const dbName = process.env.DATABASE_NAME;
 
-// The first parameter will contain the Error object if an error occurred, or null otherwise
-// The second parameter will contain the initialized database object, or null if an error occurred
-const initializeDb = function(err, client) {
+// "err" will contain an Error object if an error occurred or null if an error did not occur;
+// "client" will contain the initialized database object or null if an error occurred;
+const initializeDb = (err, client) => {
   assert.equal(null, err);
   console.log('Connected successfully to server');
-
   const db = client.db(dbName);
-  app.use('/api', indexRouter(db));
+  app.use('/api', apiRouter(db)); // Mount our API Router;
 };
 
-// Connect the instance of MongoClient to MongoDB via the connection URL
+// Connect the instance of MongoClient to MongoDB via the connection URL;
 MongoClient.connect(url, { useNewUrlParser: true }, initializeDb);
 
+// Export our app, so that it can be required in bin/www;
 module.exports = app;

@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-// Query for all the appointments on a given day;
+// Query for all of the appointments on a given day;
 const getAppointmentsByDay = (db, formattedDate) => {
   return db.collection('appointments')
     .find({
