@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
 
-const barberRoutes = (router) => (db) => {
+const barberRouter = db => {
   router.get('/', function(req, res, next) {
     db.collection('barbers')
       .find()
       .toArray()
-      .then(newBarbers => newBarbers.map(elem => {
-        const {firstName, lastName, imgUrl, _id} = elem;
+      .then(allBarbers => allBarbers.map(barber => {
+        const {firstName, lastName, imgUrl, _id} = barber;
         return {firstName, lastName, imgUrl, _id};
       }))
       .then(barbers => res.status(200).json(barbers))
@@ -55,4 +55,4 @@ const barberRoutes = (router) => (db) => {
   return router;
 };
 
-module.exports = barberRoutes(router);
+module.exports = barberRouter;

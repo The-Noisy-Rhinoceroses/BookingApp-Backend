@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const moment = require('moment');
 
+// Provide details about email address, password, and e-mailing platform;
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -9,11 +10,13 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const getResponse = function(error, info) {
+// Print a confirmation or rejection message regarding whether or not the email was sent;
+const getResponse = (error, info) => {
   error ? console.log(error) : console.log('Email sent: ' + info.response);
 };
 
-const sendEmail = function(customer, barber) {
+// Fill out the content of the email and send it to the customer;
+const sendEmail = (customer, barber) => {
   const mailOptions = {
     from: process.env.BOOKING_APP_EMAIL_ACCOUNT,
     to: customer.email,

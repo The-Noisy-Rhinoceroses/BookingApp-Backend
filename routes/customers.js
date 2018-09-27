@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 
-const customerRoutes = (router) => (db) => {
+const customerRouter = db => {
   router.get('/', (req, res, next) => {
     db.collection('customers')
       .find()
@@ -21,4 +21,4 @@ const customerRoutes = (router) => (db) => {
   return router;
 };
 
-module.exports = customerRoutes(router);
+module.exports = customerRouter;

@@ -5,7 +5,7 @@ const { ObjectId } = require('mongodb');
 const { getAppointmentsByDay, getAppointmentsByTimePeriod } = require('../utilities/queries');
 const sendEmail = require('../utilities/emails');
 
-const appointmentRouter = router => db => {
+const appointmentRouter = db => {
   router.get('/day', (req, res, next) => {
     const { date } = req.query;
     let formattedDate = moment(date, 'MM-DD-YYYY');
@@ -70,4 +70,4 @@ const appointmentRouter = router => db => {
   return router;
 };
 
-module.exports = appointmentRouter(router);
+module.exports = appointmentRouter;
