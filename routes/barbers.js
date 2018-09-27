@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
+// const { getAppointmentsByTimePeriod } = require('../utilities/queries');
 
 const barberRouter = db => {
   router.get('/', function(req, res, next) {
@@ -23,6 +24,15 @@ const barberRouter = db => {
         const {firstName, lastName, phoneNumber, email, imgUrl, _id} = singleBarber;
         res.status(200).json({firstName, lastName, phoneNumber, email, imgUrl, _id})
       })
+      .catch(next);
+  });
+
+  router.get('/:barberId/appointments', function(req, res, next) {
+    const { barberId } = req.params;
+    db.collection('appointments')
+      .find({ barberId: ObjectId(barberId) })
+      .toArray()
+      .then(appointments => res.status(200).json(appointments))
       .catch(next);
   });
 
