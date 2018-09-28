@@ -1,4 +1,5 @@
 require('../secrets');
+const barberSchema = require('../db/barbers')
 const assert = require('assert');
 
 const { MongoClient } = require('mongodb');
@@ -17,6 +18,7 @@ const populateDb = async db => {
     db.collection('appointments').drop(),
     db.collection('customers').drop()
   ]);
+  await barberSchema(db);
   const barbers = await db
     .collection('barbers')
     .insertMany([

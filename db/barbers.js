@@ -1,5 +1,5 @@
 // Validation rules using JSON schema for our collection of barbers in MongoDB;
-db.createCollection('barbers', {
+const barberSchema = (db) => db.createCollection('barbers', {
     validator: {
       $jsonSchema: {
         bsonType: 'object',
@@ -41,3 +41,5 @@ db.collection('barbers')
 db.collection('barbers')
   .findOne({ _id: ObjectId(barberId) }) // We have to cast the barberId from a string to a MongoDB objectId data type for proper lookup;
   .toArray()
+
+module.exports = barberSchema;
