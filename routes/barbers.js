@@ -30,7 +30,7 @@ const barberRouter = db => {
   router.get('/:barberId/appointments', function(req, res, next) {
     const { barberId } = req.params;
     db.collection('appointments')
-      .find({ barberId: ObjectId(barberId) })
+      .find({ barberId: ObjectId(barberId) }).project({date: 1, _id: 0})
       .toArray()
       .then(appointments => res.status(200).json(appointments))
       .catch(next);
