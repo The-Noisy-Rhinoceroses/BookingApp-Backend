@@ -1,5 +1,5 @@
 // Validation rules using JSON schema for our collection of appointments in MongoDB;
-db.createCollection('appointments', {
+const appointmentSchema = (db) => db.createCollection('appointments', {
   validator: {
     $jsonSchema: {
       bsonType: 'object',
@@ -22,16 +22,18 @@ db.createCollection('appointments', {
   }
 });
 
-// Examples of querying the collection of appointments;
-db.appointments.find({
-  date: {
-    $gte: new Date('September 20, 2018 00:00:00'), // We must cast the string into a Date object for proper lookup;
-    $lt: new Date('September 21, 2018 00:00:00')
-  }
-});
+module.exports = appointmentSchema;
 
-db.appointments.insertOne({
-  customerId: '1', // ObjectId();
-  barberId: '1', // ObjectId();
-  date: new Date('September 20, 2018 17:30:00')
-});
+// Examples of querying the collection of appointments;
+// db.appointments.find({
+//   date: {
+//     $gte: new Date('September 20, 2018 00:00:00'), // We must cast the string into a Date object for proper lookup;
+//     $lt: new Date('September 21, 2018 00:00:00')
+//   }
+// });
+
+// db.appointments.insertOne({
+//   customerId: '1', // ObjectId();
+//   barberId: '1', // ObjectId();
+//   date: new Date('September 20, 2018 17:30:00')
+// });

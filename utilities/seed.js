@@ -1,7 +1,10 @@
 require('../secrets');
-const barberSchema = require('../db/barbers')
-const customerSchema = require('../db/customers')
+
+const barberSchema = require('../db/barbers');
+const customerSchema = require('../db/customers');
+const appointmentSchema = require('../db/appointments');
 const assert = require('assert');
+const { ObjectId } = require('mongodb');
 
 const { MongoClient } = require('mongodb');
 
@@ -19,8 +22,11 @@ const populateDb = async db => {
     db.collection('appointments').drop(),
     db.collection('customers').drop()
   ]);
+
   await barberSchema(db);
   await customerSchema(db);
+  await appointmentSchema(db);
+
   const barbers = await db
     .collection('barbers')
     .insertMany([
@@ -48,7 +54,8 @@ const populateDb = async db => {
         phoneNumber: phoneNumberGenerator(),
         email: 'allan@lmao.com'
       }
-    ]);
+    ]).toArray();
+
   const customers = await db.collection('customers').insertMany([
     {
       firstName: 'Bob',
@@ -74,13 +81,49 @@ const populateDb = async db => {
       phoneNumber: phoneNumberGenerator(),
       email: 'Wsmith@lmao.com'
     }
+  ]).toArray();
+
+  const selectRandomId = (arr) => ObjectId(arr[Math.floor(Math.random() * arr.length)]._id);
+
+  const appointments = await db.collection('appointments').insertMany([
+    {
+      barberId: selectRandomId(barbers),
+      customerId: selectRandomId(customers),
+      date: new Date("October 3, 2018 12:30:00")
+    },
+    {
+      barberId: selectRandomId(barbers),
+      customerId: selectRandomId(customers),
+      date: new Date("October 3, 2018 13:30:00")
+    },
+    {
+      barberId: selectRandomId(barbers),
+      customerId: selectRandomId(customers),
+      date: new Date("October 3, 2018 14:30:00")
+    },
+    {
+      barberId: selectRandomId(barbers),
+      customerId: selectRandomId(customers),
+      date: new Date("October 3, 2018 15:30:00")
+    },
+    {
+      barberId: selectRandomId(barbers),
+      customerId: selectRandomId(customers),
+      date: new Date("October 3, 2018 10:30:00")
+    },
+    {
+      barberId: selectRandomId(barbers),
+      customerId: selectRandomId(customers),
+      date: new Date("October 3, 2018 11:30:00")
+    },
   ])
-};
+}
 
 const initializeDb = (err, client) => {
   assert.equal(null, err);
   console.log('Connected successfully to server');
   const db = client.db(dbName);
+  populateDb(db);
 };
 
 MongoClient.connect(
