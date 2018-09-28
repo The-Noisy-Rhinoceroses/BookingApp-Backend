@@ -1,5 +1,6 @@
 require('../secrets');
 const barberSchema = require('../db/barbers')
+const customerSchema = require('../db/customers')
 const assert = require('assert');
 
 const { MongoClient } = require('mongodb');
@@ -19,6 +20,7 @@ const populateDb = async db => {
     db.collection('customers').drop()
   ]);
   await barberSchema(db);
+  await customerSchema(db);
   const barbers = await db
     .collection('barbers')
     .insertMany([
@@ -47,6 +49,32 @@ const populateDb = async db => {
         email: 'allan@lmao.com'
       }
     ]);
+  const customers = await db.collection('customers').insertMany([
+    {
+      firstName: 'Bob',
+      lastName: 'Ross',
+      phoneNumber: phoneNumberGenerator(),
+      email: 'bobross@lmao.com'
+    },
+    {
+      firstName: 'Rick',
+      lastName: 'Ross',
+      phoneNumber: phoneNumberGenerator(),
+      email: 'bobross@lmao.com'
+    },
+    {
+      firstName: 'Kendrick',
+      lastName: 'Lamar',
+      phoneNumber: phoneNumberGenerator(),
+      email: 'Klmar@lmao.com'
+    },
+    {
+      firstName: 'Will',
+      lastName: 'Smith',
+      phoneNumber: phoneNumberGenerator(),
+      email: 'Wsmith@lmao.com'
+    }
+  ])
 };
 
 const initializeDb = (err, client) => {
