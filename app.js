@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Create a new MongoClient instance;
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
 
 // Connection URL;
 const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}${process.env.URL}`;
