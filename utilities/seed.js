@@ -1,21 +1,17 @@
 require('../secrets');
 
+// Module dependencies;
 const barberSchema = require('../db/barbers');
 const customerSchema = require('../db/customers');
 const appointmentSchema = require('../db/appointments');
-const assert = require('assert');
 const { ObjectId } = require('mongodb');
+const assert = require('assert');
 
-const { MongoClient } = require('mongodb');
-
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}${
-  process.env.URL
-}`;
-
-const dbName = process.env.DATABASE_NAME;
-
+// Helper functions to randomize data selection;
 const phoneNumberGenerator = () => (Math.random() * 10000000000).toString();
+const selectRandomId = (arr) => ObjectId(arr[Math.floor(Math.random() * arr.length)]._id);
 
+// Drop collections, create collections with validations, and then insert seed data;
 const populateDb = async db => {
   await Promise.all([
     db.collection('barbers').drop(),
@@ -23,9 +19,11 @@ const populateDb = async db => {
     db.collection('customers').drop()
   ]);
 
-  await barberSchema(db);
-  await customerSchema(db);
-  await appointmentSchema(db);
+  await Promise.all([
+    barberSchema(db);
+    customerSchema(db);
+    appointmentSchema(db);
+  ]);
 
   const barbers = await db
     .collection('barbers')
@@ -83,9 +81,7 @@ const populateDb = async db => {
     }
   ]).toArray();
 
-  const selectRandomId = (arr) => ObjectId(arr[Math.floor(Math.random() * arr.length)]._id);
-
-  const appointments = await db.collection('appointments').insertMany([
+  await db.collection('appointments').insertMany([
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
@@ -119,15 +115,16 @@ const populateDb = async db => {
   ])
 }
 
+// Connect to DB and run seed function;
+const { MongoClient } = require('mongodb');
+const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}${process.env.URL}`;
+const dbName = process.env.DATABASE_NAME;
+
 const initializeDb = (err, client) => {
   assert.equal(null, err);
   console.log('Connected successfully to server');
   const db = client.db(dbName);
-  populateDb(db);
+  populateDb(db); // If we were performing other operations and potential race conditions arose, then we could await this (it is an asyncrhonous function);
 };
 
-MongoClient.connect(
-  url,
-  { useNewUrlParser: true },
-  initializeDb
-);
+MongoClient.connect(url, { useNewUrlParser: true }, initializeDb);
