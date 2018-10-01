@@ -22,7 +22,7 @@ const sendEmail = (customer, barber) => {
   const event = cal.createEvent({
     start: moment(customer.appointmentDate),
     end: moment(customer.appointmentDate).add(30, 'minutes'),
-    organizer: 'Rezi <bookingapplication718@gmail.com>',
+    organizer: `Rezi <${process.env.BOOKING_APP_EMAIL_ACCOUNT}>`,
     summary: 'SUMMARY',
     description: 'DESCRIPTION',
   });
