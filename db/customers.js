@@ -1,5 +1,5 @@
 // Validation rules using JSON schema for our collection of customers in MongoDB;
-const customerSchema = (db) => db.createCollection('customers', {
+const customerSchema = (db) => db.createCollection('customersx', {
   validator: {
     $jsonSchema: {
       bsonType: 'object',
