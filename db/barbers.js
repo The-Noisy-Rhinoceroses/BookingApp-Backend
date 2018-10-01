@@ -1,5 +1,5 @@
 // Validation rules using JSON schema for our collection of barbers in MongoDB;
-db.createCollection('barbers', {
+const barberSchema = (db) => db.createCollection('barbersx', {
     validator: {
       $jsonSchema: {
         bsonType: 'object',
@@ -32,12 +32,14 @@ db.createCollection('barbers', {
     }
   });
 
-// Examples of querying the collection of barbers;
-db.collection('barbers')
-  .find() // This will return a cursor object;
-  .toArray() // The toArray() method returns an array that contains all the documents from a cursor;
-             // The method completely iterates through the cursor, loading all the documents into RAM and exhausting the cursor;
+module.exports = barberSchema;
 
-db.collection('barbers')
-  .findOne({ _id: ObjectId(barberId) }) // We have to cast the barberId from a string to a MongoDB objectId data type for proper lookup;
-  .toArray()
+// // Examples of querying the collection of barbers;
+// db.collection('barbers')
+//   .find() // This will return a cursor object;
+//   .toArray() // The toArray() method returns an array that contains all the documents from a cursor;
+//              // The method completely iterates through the cursor, loading all the documents into RAM and exhausting the cursor;
+
+// db.collection('barbers')
+//   .findOne({ _id: ObjectId(barberId) }) // We have to cast the barberId from a string to a MongoDB objectId data type for proper lookup;
+//   .toArray()

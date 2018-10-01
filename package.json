@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "seed": "node ./utilities/seed.js"
   },
   "dependencies": {
     "compression": "^1.7.3",
