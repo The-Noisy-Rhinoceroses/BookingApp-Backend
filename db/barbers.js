@@ -31,7 +31,7 @@ const barberSchema = (db) => db.createCollection('barbersx', {
       }
     }
   });
-  
+
 module.exports = barberSchema;
 
 // // Examples of querying the collection of barbers;
@@ -43,4 +43,3 @@ module.exports = barberSchema;
 // db.collection('barbers')
 //   .findOne({ _id: ObjectId(barberId) }) // We have to cast the barberId from a string to a MongoDB objectId data type for proper lookup;
 //   .toArray()
-

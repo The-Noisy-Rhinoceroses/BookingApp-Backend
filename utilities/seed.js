@@ -8,23 +8,25 @@ const { ObjectId } = require('mongodb');
 const assert = require('assert');
 
 // Helper functions to randomize data selection;
-const phoneNumberGenerator = () =>
-  Math.floor(Math.random() * 10000000000).toString();
-const selectRandomId = collection =>
-  ObjectId(
-    collection.ops[Math.floor(Math.random() * collection.ops.length)]._id
-  );
+const phoneNumberGenerator = () => Math.floor(Math.random() * 10000000000).toString();
+const selectRandomId = collection => ObjectId(collection.ops[Math.floor(Math.random() * collection.ops.length)]._id);
 
 // Drop collections, create collections with validations, and then insert seed data;
 const populateDb = async db => {
   const existingCollections = await db.collections();
-  const existingCollectionsNames = existingCollections.map(
-    collection => collection.s.name
-  );
-  const collectionsToSeed = ['barbersx', 'appointmentsx', 'customersx'];
-  for (let i = 0; i < existingCollectionsNames.length; i++) {
-    if (existingCollectionsNames.includes(collectionsToSeed[i]))
-      await db.collection(collectionsToSeed[i]).drop();
+
+  const existingCollectionsNames = existingCollections.reduce((obj, currCol) => {
+    obj[currCol.s.name] = true;
+    return obj;
+  }, {});
+
+  const collectionsToSeed = ['barbersx', 'appointmentsx', 'customersx']; // TODO: Remove tail "x";
+
+  for (let i = 0; i < collectionsToSeed.length; i++) {
+    let collectionName = collectionsToSeed[i];
+    if (existingCollectionsNames.hasOwnProperty(collectionName)) {
+      await db.collection(collectionName).drop();
+    }
   }
 
   await Promise.all([
@@ -123,29 +125,22 @@ const populateDb = async db => {
 
 // Connect to DB and run seed function;
 const { MongoClient } = require('mongodb');
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}${
-  process.env.URL
-}`;
+const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}${process.env.URL}`;
 const dbName = process.env.DATABASE_NAME;
 
 const initializeDb = async (err, client) => {
   assert.equal(null, err);
   console.log('Connected successfully to server');
   const db = client.db(dbName);
-  // If we were performing other operations and potential race conditions arose, then we could await this (it is an asyncrhonous function);
   try {
-    await populateDb(db);
+    await populateDb(db); // Due to potential race conditions, we await this (it is an asyncrhonous function);
     console.log('seeded');
     process.exit(0);
-  } 
+  }
   catch (error) {
     console.log(error);
     process.exit(1);
   }
 };
 
-MongoClient.connect(
-  url,
-  { useNewUrlParser: true },
-  initializeDb
-);
+MongoClient.connect(url, { useNewUrlParser: true }, initializeDb);
