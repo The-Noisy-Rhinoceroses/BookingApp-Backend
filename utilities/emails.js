@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer');
 const moment = require('moment');
 const ical = require('ical-generator');
-const cal = ical({domain: 'gmail.com'});
 
 // Provide details about email address, password, and e-mailing platform;
 const transporter = nodemailer.createTransport({
@@ -19,12 +18,13 @@ const getResponse = (error, info) => {
 
 // Fill out the content of the email and send it to the customer;
 const sendEmail = (customer, barber) => {
+  const cal = ical();
   const event = cal.createEvent({
     start: moment(customer.appointmentDate),
     end: moment(customer.appointmentDate).add(30, 'minutes'),
     organizer: 'Rezi <bookingapplication718@gmail.com>',
     summary: 'SUMMARY',
-    description: 'DESCRIPTION'
+    description: 'DESCRIPTION',
   });
   const attendee = event.createAttendee({
     email: customer.email,
