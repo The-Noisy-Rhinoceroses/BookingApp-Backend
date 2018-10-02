@@ -9,6 +9,8 @@ const logger = require('morgan');
 const assert = require('assert');
 const helmet = require('helmet');
 const compression = require('compression');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 // Instantiate our application with Express and require in our API Router;
 const apiRouter = require('./routes/index');
@@ -38,6 +40,12 @@ const initializeDb = (err, client) => {
   assert.equal(null, err);
   console.log('Connected successfully to server');
   const db = client.db(dbName);
+  app.use(session({
+  secret: process.env.SESSION_SECRET,
+  store: new MongoStore({db}),
+  resave: false,
+  saveUninitialized: false
+  }));
   app.use('/api', apiRouter(db)); // Mount our API Router;
 };
 
