@@ -11,10 +11,22 @@ const helmet = require('helmet');
 const compression = require('compression');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
+const { ObjectId } = require('mongodb');
+
 
 // Instantiate our application with Express and require in our API Router;
 const apiRouter = require('./routes/index');
 const app = express();
+
+passport.serializeUser(function(barber, done) {
+  done(null, barber._id);
+});
+
+passport.deserializeUser(function(id, done) {
+    db.collection('barbers').findOne({ _id: ObjectId(id) })
+    .then(barber => done(err, barber));
+});
 
 // Middleware;
 app.use(helmet())
@@ -46,6 +58,8 @@ const initializeDb = (err, client) => {
   resave: false,
   saveUninitialized: false
   }));
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use('/api', apiRouter(db)); // Mount our API Router;
 };
 
