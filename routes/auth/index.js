@@ -15,7 +15,8 @@ const authRouter = db => {
       .findOne({ email: req.body.email });
     if (!user) {
       res.status(401).send('Wrong username and/or password');
-    } else if (correctPassword(candidatePwd, user.salt, user.password)) {
+    }
+    else if (correctPassword(candidatePwd, user.salt, user.password)) {
       req.login(user, err => {
         if (err) {
           next(err);
@@ -23,7 +24,8 @@ const authRouter = db => {
           res.json(user);
         }
       });
-    } else {
+    }
+    else {
       res.status(401).send('Wrong username and/or password');
     }
   });
@@ -37,7 +39,9 @@ const authRouter = db => {
   router.post('/signup', (req, res, next) => {
     const { firstName, lastName, email, phoneNumber, password } = req.body;
     const imgUrl = req.body.imgUrl || '';
-    //TODO HASH PASSWORDS
+    const salt = generateSalt();
+    const encryptedPassword = encryptPassword(password, salt);
+
     if (req.user && req.user.isBarber) {
       db.collection('barbers')
         .insertOne({
@@ -46,12 +50,14 @@ const authRouter = db => {
           email,
           imgUrl,
           phoneNumber,
-          password,
+          salt,
+          password: encryptedPassword,
           isBarber: true
         })
         .then(() => res.status(201).send('Barber Created'))
         .catch(next);
-    } else {
+    }
+    else {
       res.status(403).send('Not Authorized');
     }
   });
