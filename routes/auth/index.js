@@ -17,7 +17,22 @@ const authRouter = db => {
   router.post('/logout', (req, res) => {
     req.logout();
     req.session.destroy();
-    res.send("you have logged out!");
+    res.send('you have logged out!');
+  });
+
+  router.post('/signup', (req, res, next) => {
+    const { firstName, lastName, email, phoneNumber, password } = req.body;
+    const imgUrl = req.body.imgUrl || '';
+    //TODO HASH PASSWORDS
+    if (req.user && req.user.isBarber) {
+      db.collection('barbers')
+        .insertOne({ firstName, lastName, email, imgUrl, phoneNumber, password, isBarber: true })
+        .then(() => res.status(201).send('Barber Created'))
+        .catch(next);
+    }
+    else {
+      res.status(403).send('Not Authorized')
+    }
   });
 
   router.get('/me', (req, res, next) => {
