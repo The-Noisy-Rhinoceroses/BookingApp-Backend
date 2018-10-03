@@ -1,17 +1,31 @@
 const express = require('express');
+const crypto = require('crypto');
 const router = express.Router();
+const {
+  generateSalt,
+  correctPassword,
+  encryptPassword
+} = require('../../utilities/hashing');
 
 const authRouter = db => {
   router.post('/login', async (req, res, next) => {
-    const user = await db.collection('barbers').findOne({ email: req.body.email });
-    req.login(user, err => {
-      if (err) {
-        next(err);
-      }
-      else {
-        res.json(user);
-      }
-    });
+    const candidatePwd = req.body.password;
+    const user = await db
+      .collection('barbers')
+      .findOne({ email: req.body.email });
+    if (!user) {
+      res.status(401).send('Wrong username and/or password');
+    } else if (correctPassword(candidatePwd, user.salt, user.password)) {
+      req.login(user, err => {
+        if (err) {
+          next(err);
+        } else {
+          res.json(user);
+        }
+      });
+    } else {
+      res.status(401).send('Wrong username and/or password');
+    }
   });
 
   router.post('/logout', (req, res) => {
@@ -26,12 +40,19 @@ const authRouter = db => {
     //TODO HASH PASSWORDS
     if (req.user && req.user.isBarber) {
       db.collection('barbers')
-        .insertOne({ firstName, lastName, email, imgUrl, phoneNumber, password, isBarber: true })
+        .insertOne({
+          firstName,
+          lastName,
+          email,
+          imgUrl,
+          phoneNumber,
+          password,
+          isBarber: true
+        })
         .then(() => res.status(201).send('Barber Created'))
         .catch(next);
-    }
-    else {
-      res.status(403).send('Not Authorized')
+    } else {
+      res.status(403).send('Not Authorized');
     }
   });
 
