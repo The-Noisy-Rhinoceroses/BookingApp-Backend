@@ -36,15 +36,6 @@ const barberRouter = db => {
       .catch(next);
   });
 
-  router.post('/', (req, res, next) => {
-    const { firstName, lastName, email, phoneNumber } = req.body;
-    const imgUrl = req.body.imgUrl || '';
-    db.collection('barbers')
-      .insertOne({ firstName, lastName, email, imgUrl, phoneNumber })
-      .then(() => res.status(201).send('Barber Created'))
-      .catch(next);
-  });
-
   router.put('/:barberId', (req, res, next) => {
     const { barberId } = req.params;
     const { firstName, lastName, email, phoneNumber, imgUrl } = req.body;

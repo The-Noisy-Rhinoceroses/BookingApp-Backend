@@ -9,8 +9,13 @@ const logger = require('morgan');
 const assert = require('assert');
 const helmet = require('helmet');
 const compression = require('compression');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
+const { ObjectId } = require('mongodb');
 
-// Instantiate our application with Express and require in our API Router;
+// Instantiate our application with Express and require in our Auth Router and API Router;
+const authRouter = require('./routes/auth');
 const apiRouter = require('./routes/index');
 const app = express();
 
@@ -38,6 +43,26 @@ const initializeDb = (err, client) => {
   assert.equal(null, err);
   console.log('Connected successfully to server');
   const db = client.db(dbName);
+
+  app.use(session({
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({db}),
+    resave: false,
+    saveUninitialized: false
+  }));
+
+  passport.serializeUser(function(barber, done) {
+    done(null, barber._id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    db.collection('barbers').findOne({ _id: ObjectId(id) })
+      .then(barber => done(err, barber));
+  });
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use('/auth', authRouter(db)); // Mount our Auth Router;
   app.use('/api', apiRouter(db)); // Mount our API Router;
 };
 
