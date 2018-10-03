@@ -12,8 +12,8 @@ const encryptPassword = function(plainText, salt) {
     .digest('hex');
 };
 
-const correctPassword = function(candidatePwd, salt, password) {
+const isCorrectPassword = function(candidatePwd, salt, password) {
   return encryptPassword(candidatePwd, salt) === password;
 };
 
-module.exports = { generateSalt, encryptPassword, correctPassword };
+module.exports = { generateSalt, encryptPassword, isCorrectPassword };

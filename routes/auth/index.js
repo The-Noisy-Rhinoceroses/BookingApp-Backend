@@ -1,9 +1,8 @@
 const express = require('express');
-const crypto = require('crypto');
 const router = express.Router();
 const {
   generateSalt,
-  correctPassword,
+  isCorrectPassword,
   encryptPassword
 } = require('../../utilities/hashing');
 
@@ -16,12 +15,13 @@ const authRouter = db => {
     if (!user) {
       res.status(401).send('Wrong username and/or password');
     }
-    else if (correctPassword(candidatePwd, user.salt, user.password)) {
+    else if (isCorrectPassword(candidatePwd, user.salt, user.password)) {
       req.login(user, err => {
+        const { firstName, lastName, _id } = user
         if (err) {
           next(err);
         } else {
-          res.json(user);
+          res.status(200).json({ firstName, lastName, _id });
         }
       });
     }
@@ -63,7 +63,12 @@ const authRouter = db => {
   });
 
   router.get('/me', (req, res, next) => {
-    res.json(req.user);
+    if (req.user) {
+      const { firstName, lastName, _id } = req.user
+      res.status(200).json({ firstName, lastName, _id });
+    } else {
+      res.status(404).json({});
+    }
   });
 
   return router;
