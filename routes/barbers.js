@@ -31,7 +31,8 @@ const barberRouter = db => {
     const { barberId } = req.params;
     db.collection('appointments').aggregate([
       {$match : { barberId: ObjectId(barberId)}}, 
-      {$lookup : {from: "customers", localField: "customerId", foreignField: "_id", as: "customer"}}
+      {$lookup : {from: "customers", localField: "customerId", foreignField: "_id", as: "customer"}},
+      {$unwind: "$customer" }
     ]).toArray()
     .then(appointments => res.json(appointments))
     .catch(next);
