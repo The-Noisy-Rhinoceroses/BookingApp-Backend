@@ -29,11 +29,13 @@ const barberRouter = db => {
 
   router.get('/:barberId/appointments', function(req, res, next) {
     const { barberId } = req.params;
-    db.collection('appointments')
-      .find({ barberId: ObjectId(barberId) }).project({date: 1, _id: 0})
-      .toArray()
-      .then(appointments => res.status(200).json(appointments))
-      .catch(next);
+    db.collection('appointments').aggregate([
+      {$match : { barberId: ObjectId(barberId)}}, 
+      {$lookup : {from: "customers", localField: "customerId", foreignField: "_id", as: "customer"}},
+      {$unwind: "$customer" }
+    ]).toArray()
+    .then(appointments => res.json(appointments))
+    .catch(next);
   });
 
   router.put('/:barberId', (req, res, next) => {
