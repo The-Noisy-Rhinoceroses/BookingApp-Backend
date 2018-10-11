@@ -11,10 +11,9 @@ const barberRouter = db => {
       .toArray()
       .then(allBarbers =>
         allBarbers.map(barber => {
-          const { firstName, lastName, imgUrl, _id } = barber;
-          return { firstName, lastName, imgUrl, _id };
-        })
-      )
+          const { firstName, lastName, imgUrl, _id, description } = barber;
+          return { firstName, lastName, imgUrl, _id, description };
+        }))
       .then(barbers => res.status(200).json(barbers))
       .catch(next);
   });
@@ -30,11 +29,20 @@ const barberRouter = db => {
           phoneNumber,
           email,
           imgUrl,
+          description,
           _id
         } = singleBarber;
         res
           .status(200)
-          .json({ firstName, lastName, phoneNumber, email, imgUrl, _id });
+          .json({
+            firstName,
+            lastName,
+            phoneNumber,
+            email,
+            imgUrl,
+            _id,
+            description
+          });
       })
       .catch(next);
   });
@@ -70,11 +78,11 @@ const barberRouter = db => {
 
   router.put('/:barberId', (req, res, next) => {
     const { barberId } = req.params;
-    const { firstName, lastName, email, phoneNumber, imgUrl } = req.body;
+    const { firstName, lastName, email, phoneNumber, imgUrl, description } = req.body;
     db.collection('barbers')
       .updateOne(
         { _id: ObjectId(barberId) },
-        { $set: { firstName, lastName, email, phoneNumber, imgUrl } }
+        { $set: { firstName, lastName, email, phoneNumber, imgUrl, description } }
       )
       .then(updatedBarber => res.status(201).json(updatedBarber))
       .catch(next);
