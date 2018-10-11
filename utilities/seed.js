@@ -37,28 +37,40 @@ const populateDb = async db => {
 
   const barbers = await db.collection('barbersx').insertMany([
     {
-      firstName: 'Rick',
-      lastName: 'Sanchez',
+      firstName: 'Richard',
+      lastName: 'Lanchez',
       phoneNumber: phoneNumberGenerator(),
-      email: 'rick@lmao.com'
+      email: 'rick@lmao.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales, eros non elementum iaculis, nisi metus fermentum elit, eget bibendum nulla turpis vestibulum urna. Integer ut magna eu urna mattis.',
+      imgUrl: 'https://images.pexels.com/photos/897270/pexels-photo-897270.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350',
+      isBarber: true
     },
     {
-      firstName: 'Dan',
+      firstName: 'Daniel Castillo',
       lastName: 'Man',
       phoneNumber: phoneNumberGenerator(),
-      email: 'dan@lmao.com'
+      email: 'dan@lmao.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales, eros non elementum iaculis, nisi metus fermentum elit, eget bibendum nulla turpis vestibulum urna. Integer ut magna eu urna mattis.',
+      imgUrl: 'https://images.pexels.com/photos/1453006/pexels-photo-1453006.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350',
+      isBarber: true
     },
     {
-      firstName: 'John',
-      lastName: 'Doe',
+      firstName: 'Manjun',
+      lastName: 'Hui',
       phoneNumber: phoneNumberGenerator(),
-      email: 'john@lmao.com'
+      email: 'john@lmao.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales, eros non elementum iaculis, nisi metus fermentum elit, eget bibendum nulla turpis vestibulum urna. Integer ut magna eu urna mattis.',
+      imgUrl: 'https://images.pexels.com/photos/668196/pexels-photo-668196.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350',
+      isBarber: true
     },
     {
       firstName: 'Allan',
-      lastName: 'Lugia',
+      lastName: 'Lapid',
       phoneNumber: phoneNumberGenerator(),
-      email: 'allan@lmao.com'
+      email: 'allan@lmao.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales, eros non elementum iaculis, nisi metus fermentum elit, eget bibendum nulla turpis vestibulum urna. Integer ut magna eu urna mattis.',
+      imgUrl: 'https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=36efcf4bc04a4325d07e59b6d6c39d85&auto=format&fit=crop&w=1050&q=80',
+      isBarber: true
     }
   ]);
 
@@ -93,32 +105,32 @@ const populateDb = async db => {
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 12:30:00')
+      date: new Date('October 24, 2018 12:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 13:30:00')
+      date: new Date('October 24, 2018 13:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 14:30:00')
+      date: new Date('October 24, 2018 14:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 15:30:00')
+      date: new Date('October 24, 2018 15:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 10:30:00')
+      date: new Date('October 24, 2018 10:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 11:30:00')
+      date: new Date('October 24, 2018 11:30:00')
     }
   ]);
 };

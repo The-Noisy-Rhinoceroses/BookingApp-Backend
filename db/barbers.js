@@ -26,6 +26,14 @@ const barberSchema = (db) => db.createCollection('barbersx', {
           imgUrl: {
               bsonType: 'string',
               description: 'must be a string'
+          },
+          description: {
+            bsonType: 'string',
+            description: 'must be a string'
+          },
+          isBarber: {
+            bsonType: 'bool',
+            description: 'must be a boolean'
           }
         }
       }
