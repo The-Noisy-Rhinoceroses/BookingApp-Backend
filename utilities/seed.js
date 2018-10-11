@@ -4,8 +4,10 @@ require('../secrets');
 const barberSchema = require('../db/barbers');
 const customerSchema = require('../db/customers');
 const appointmentSchema = require('../db/appointments');
+const serviceSchema = require('../db/services');
 const { ObjectId } = require('mongodb');
 const assert = require('assert');
+const { generateSalt,encryptPassword } = require('./hashing');
 
 // Helper functions to randomize data selection;
 const phoneNumberGenerator = () => Math.floor(Math.random() * 10000000000).toString();
@@ -20,7 +22,7 @@ const populateDb = async db => {
     return obj;
   }, {});
 
-  const collectionsToSeed = ['barbersx', 'appointmentsx', 'customersx']; // TODO: Remove tail "x";
+  const collectionsToSeed = ['barbers', 'appointments', 'customers', 'services']; // TODO: Remove tail "x";
 
   for (let i = 0; i < collectionsToSeed.length; i++) {
     let collectionName = collectionsToSeed[i];
@@ -32,37 +34,62 @@ const populateDb = async db => {
   await Promise.all([
     barberSchema(db),
     customerSchema(db),
-    appointmentSchema(db)
+    appointmentSchema(db),
+    serviceSchema(db)
+
   ]);
 
-  const barbers = await db.collection('barbersx').insertMany([
+  const salt = generateSalt();
+  const encryptedPassword = encryptPassword("howdy", salt);
+
+  const barbers = await db.collection('barbers').insertMany([
     {
-      firstName: 'Rick',
-      lastName: 'Sanchez',
+      firstName: 'Richard',
+      lastName: 'Lanchez',
       phoneNumber: phoneNumberGenerator(),
-      email: 'rick@lmao.com'
+      email: 'rick@lmao.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales, eros non elementum iaculis, nisi metus fermentum elit, eget bibendum nulla turpis vestibulum urna. Integer ut magna eu urna mattis.',
+      imgUrl: 'https://images.pexels.com/photos/897270/pexels-photo-897270.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350',
+      isBarber: true,
+      password: encryptedPassword,
+      salt
     },
     {
-      firstName: 'Dan',
+      firstName: 'Daniel Castillo',
       lastName: 'Man',
       phoneNumber: phoneNumberGenerator(),
-      email: 'dan@lmao.com'
+      email: 'dan@lmao.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales, eros non elementum iaculis, nisi metus fermentum elit, eget bibendum nulla turpis vestibulum urna. Integer ut magna eu urna mattis.',
+      imgUrl: 'https://images.pexels.com/photos/1453006/pexels-photo-1453006.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350',
+      isBarber: true,
+      password: encryptedPassword,
+      salt
     },
     {
-      firstName: 'John',
-      lastName: 'Doe',
+      firstName: 'Manjun',
+      lastName: 'Hui',
       phoneNumber: phoneNumberGenerator(),
-      email: 'john@lmao.com'
+      email: 'john@lmao.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales, eros non elementum iaculis, nisi metus fermentum elit, eget bibendum nulla turpis vestibulum urna. Integer ut magna eu urna mattis.',
+      imgUrl: 'https://images.pexels.com/photos/668196/pexels-photo-668196.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350',
+      isBarber: true,
+      password: encryptedPassword,
+      salt
     },
     {
       firstName: 'Allan',
-      lastName: 'Lugia',
+      lastName: 'Lapid',
       phoneNumber: phoneNumberGenerator(),
-      email: 'allan@lmao.com'
+      email: 'allan@lmao.com',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales, eros non elementum iaculis, nisi metus fermentum elit, eget bibendum nulla turpis vestibulum urna. Integer ut magna eu urna mattis.',
+      imgUrl: 'https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=36efcf4bc04a4325d07e59b6d6c39d85&auto=format&fit=crop&w=1050&q=80',
+      isBarber: true,
+      password: encryptedPassword,
+      salt
     }
   ]);
 
-  const customers = await db.collection('customersx').insertMany([
+  const customers = await db.collection('customers').insertMany([
     {
       firstName: 'Bob',
       lastName: 'Ross',
@@ -89,38 +116,149 @@ const populateDb = async db => {
     }
   ]);
 
-  await db.collection('appointmentsx').insertMany([
+  await db.collection('appointments').insertMany([
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 12:30:00')
+      date: new Date('October 24, 2018 12:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 13:30:00')
+      date: new Date('October 24, 2018 13:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 14:30:00')
+      date: new Date('October 24, 2018 14:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 15:30:00')
+      date: new Date('October 24, 2018 15:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 10:30:00')
+      date: new Date('October 24, 2018 10:30:00')
     },
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 3, 2018 11:30:00')
+      date: new Date('October 24, 2018 11:30:00')
     }
   ]);
+
+  await db.collection('services').insertMany([
+    {
+    serviceName: "Fade and Beard",
+    duration: 50,
+    price: 28,
+    description: "Advanced cut with creative, gradual fading of the hair. Choice of style on the top of the head. Shape up included."
+    },
+    {
+    serviceName: "Regular Cut",
+    duration: 25,
+    price: 20,
+    description: "One length on side and back of the head and one length on top, with clippers. Shape up included. Simple, clean, done right."
+    },
+    {
+    serviceName: "Brow Cleaner add-on",
+    duration: 5,
+    price: 4,
+    description: "Trimming, lining, and general grooming of the eyebrows. Can be added to any service. They need some love too, sleek those boys up!"
+    },
+    {
+    serviceName: "Beard Trim",
+    duration: 10,
+    price: 5,
+    description: "Simple grooming and cleaning of the facial hair or beard. Can be added on to any service. Goatee, 'stach, chinstrap, or full beard, they need finessing too."
+    },
+    {
+    serviceName: "Scissor Cut",
+    duration: 30,
+    price: 28,
+    description: "Service done with all or most scissor techniques. This one is for you medium to longer length style guys. Keep that hair flowin'."
+    },
+    {
+    serviceName: "Beard Sculpting",
+    duration: 10,
+    price: 10,
+    description: "This one is for bigger, fuller beard work. Beard is sculpted, using clippers, scissors and razor. Can be added on to any service, James Harden and lumberjacks would choose this option."
+    },
+    {
+    serviceName: "Faded Cut",
+    duration: 40,
+    price: 25,
+    description: "Advanced cut with creative, gradual fading of the hair. Choice of style on the top of the head. Shape up included. A Fade is the Way, Bro."
+    },
+    {
+    serviceName: "Hair Designs",
+    duration: 30,
+    price: 20,
+    description: "In-hair design created with a combination of clippers, trimmers and razor etching. Must contact barber directly for consultation and final pricing. For the bold, the creative, and the style forward client."
+    },
+    {
+    serviceName: "The Hot Towel Shave",
+    duration: 25,
+    price: 28,
+    description: "Performed with a straight razor, two hot towels infused with oils, facial cleanser massage, and one cold towel to finish. A modern twist on a traditional favorite!"
+    },
+    {
+    serviceName: "Tapered Cut",
+    duration: 35,
+    price: 25,
+    description: "Gradual Fading at the temple/sideburns and the back of the neck area. Choice of style on the top of the head. Hairline line clean up or shaping included. Best suited for you business guys!"
+    },
+    {
+    serviceName: "24K Gold Mask Treatment",
+    duration: 20,
+    price: 10,
+    description: "An anti-wrinkle, anti-toxin, and anti-acne facial mask mostly made of turmeric, honey, and gold particles. As one of the safest metals, it's easily absorbed into the skin giving it influence at a cellular level hydrating and renewing the skin. It helps reverse oxidation damage to collagen fibers, aiding in the regeneration of healthy new cells, bringing natural luster and youthful radiance to all skin types."
+    },
+    {
+    serviceName: "Purifying Mask Treatment",
+    duration: 20,
+    price: 10,
+    description: "An activated charcoal peel-off mask that removes blackheads, dirt, and oil ensuring skin to feel soft and silk smooth. It calms any irritations and minimizes pores leaving your face healthy, clean, fresh, and beautiful"
+    },
+    {
+    serviceName: "The Little Rascal Cut",
+    duration: 30,
+    price: 15,
+    description: "Children's cut, ages 12 and under."
+    },
+    {
+    serviceName: "Skin Fade Cut",
+    duration: 45,
+    price: 25,
+    description: "Fade that begins bald and blends into the desired length of hair on the sides or top. Choice of style on top of the head. Front hairline clean up included. Our cleanest look, and our specialty."
+    },
+    {
+    serviceName: "Senior Rascal",
+    duration: 30,
+    price: 15,
+    description: "Senior Citizen cut 55+"
+    },
+    {
+    serviceName: "The Dapper Rascal Cut",
+    duration: 50,
+    price: 30,
+    description: "Choice of specialty cut. Two hot towels on face and neck, ending with shampoo and styling. This an an upgraded service, experience the difference why don't you?"
+    },
+    {
+    serviceName: "The Line-Up",
+    duration: 15,
+    price: 8,
+    description: "Cleaning and defining of the hairline with trimmer and straight razor. We do it crisp and smooth, like your swag."
+    },
+    {
+    serviceName: "The Royal Rascal Treatment",
+    duration: 75,
+    price: 45,
+    description: "Choice of specialty haircut. Different selection of premium products. Two hot towels on face and neck with massage, ending with shampoo and styling. Black or gold mask included. Complimentary beverage. Our highest honor service, indulge yourself, you know you deserve it."
+    }
+    ])
 };
 
 // Connect to DB and run seed function;
