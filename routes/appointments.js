@@ -37,7 +37,8 @@ const appointmentRouter = db => {
       firstName,
       lastName,
       barberFirstName,
-      barberLastName
+      barberLastName,
+      selectedServices
     } = req.body;
 
     const objectBarberId = ObjectId(barberId);
@@ -51,6 +52,7 @@ const appointmentRouter = db => {
       .insertOne({
         barberId: objectBarberId,
         date,
+        selectedServices,
         customerId: objectCustomerId
       })
       .then(() => {
