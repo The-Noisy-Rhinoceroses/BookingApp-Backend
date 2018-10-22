@@ -14,7 +14,7 @@ const serviceSchema = (db) => db.createCollection('services', {
             description: 'must be a int and is required'
           },
           price: {
-            bsonType: 'int',
+            bsonType: 'double',
             description: 'must be a double and is required'
           },
           description: {

@@ -3,7 +3,7 @@ const appointmentSchema = (db) => db.createCollection('appointments', {
   validator: {
     $jsonSchema: {
       bsonType: 'object',
-      required: ['customerId', 'barberId', 'date'],
+      required: ['customerId', 'barberId', 'date' /*'totalPrice',  'selectedServices' 'totalDuration'*/],
       properties: {
         customerId: {
           bsonType: 'objectId',
@@ -16,6 +16,18 @@ const appointmentSchema = (db) => db.createCollection('appointments', {
         date: {
           bsonType: 'date',
           description: 'must be a date and is required'
+        },
+        totalPrice: {
+          bsonType: 'double',
+          description: 'must be a double and is required'
+        },
+        selectedServices: {
+          bsonType: 'array',
+          description: 'must be an array and is required'
+        },
+        totalDuration: {
+          bsonType: 'int',
+          description: 'must be an int and is required'
         }
       }
     }
