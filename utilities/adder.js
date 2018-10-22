@@ -1,11 +1,9 @@
 const adder = (appointment, targetKey) => {
   let total = 0;
 
-  for (let key in appointment) {
-    if (appointment.hasOwnProperty(key)) {
-      let currentService = appointment[key];
-      total += currentService[targetKey];
-    }
+  for (let i = 0; i < appointment.length; i++) {
+    let currentService = appointment[i];
+    total += currentService[targetKey];
   }
 
   return total;
