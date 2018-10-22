@@ -5,6 +5,7 @@ const { ObjectId, Double } = require('mongodb');
 const { getAppointmentsByDay, getAppointmentsByTimePeriod } = require('../utilities/queries');
 const sendEmail = require('../utilities/emails');
 const adder = require('../utilities/adder');
+const retrieveServices = require('../utilities/retrieveServices');
 
 const appointmentRouter = db => {
   router.get('/day', (req, res, next) => {
@@ -29,7 +30,7 @@ const appointmentRouter = db => {
       .catch(next);
   });
 
-  router.post('/', (req, res, next) => {
+  router.post('/', async (req, res, next) => {
     const {
       barberId,
       appointmentDate,
@@ -50,8 +51,16 @@ const appointmentRouter = db => {
     const barber = {barberFirstName, barberLastName};
 
     const selectedServicesNames = Object.keys(selectedServices);
-    const totalPrice = Double(adder(selectedServices, 'price'));
-    const totalDuration = adder(selectedServices, 'duration');
+    let actualServices;
+
+    try {
+      actualServices = await retrieveServices(db, selectedServicesNames);
+    } catch (error) {
+      console.log(error);
+    }
+
+    const totalPrice = Double(adder(actualServices, 'price'));
+    const totalDuration = adder(actualServices, 'duration');
 
     db.collection('appointments')
       .insertOne({
