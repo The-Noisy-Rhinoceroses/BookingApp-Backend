@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const moment = require('moment');
-const { ObjectId } = require('mongodb');
+const { ObjectId, Double } = require('mongodb');
 const { getAppointmentsByDay, getAppointmentsByTimePeriod } = require('../utilities/queries');
 const sendEmail = require('../utilities/emails');
+const adder = require('../utilities/adder');
 
 const appointmentRouter = db => {
   router.get('/day', (req, res, next) => {
@@ -48,12 +49,18 @@ const appointmentRouter = db => {
     const customer = {firstName, lastName, email, appointmentDate};
     const barber = {barberFirstName, barberLastName};
 
+    const selectedServicesNames = Object.keys(selectedServices);
+    const totalPrice = Double(adder(selectedServices, 'price'));
+    const totalDuration = adder(selectedServices, 'duration');
+
     db.collection('appointments')
       .insertOne({
         barberId: objectBarberId,
         date,
-        selectedServices,
-        customerId: objectCustomerId
+        selectedServices: selectedServicesNames,
+        customerId: objectCustomerId,
+        totalPrice,
+        totalDuration
       })
       .then(() => {
         res.sendStatus(201);
