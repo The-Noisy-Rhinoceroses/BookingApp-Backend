@@ -7,6 +7,7 @@
     "seed": "node ./utilities/seed.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "compression": "^1.7.3",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "~1.4.3",
