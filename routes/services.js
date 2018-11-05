@@ -34,21 +34,16 @@ const servicesRouter = db => {
     };
 
     const url = `square-commerce-v1://payment/create?data=${JSON.stringify(dataParameter)}`;
-
-    axios
-      .get(url)
-      .then(res => res.data)
-      .then(whatIsThis => console.log(whatIsThis))
-      .catch(err => console.log(err))
+    res.json(url)
   });
 
   router.post('/success', (req, res, next) => {
     console.log(req.body);
-    console.log("POST!");
+    console.log('POST!');
   });
 
   router.get('/success', (req, res, next) => {
-    console.log("GET LINE 51!");
+    console.log('GET LINE 51!');
   });
 
   return router;

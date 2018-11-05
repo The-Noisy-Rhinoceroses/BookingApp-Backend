@@ -142,7 +142,7 @@ const populateDb = async db => {
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 31, 2018 12:30:00'),
+      date: new Date('November 30, 2018 12:30:00'),
       totalDuration: 30,
       totalPrice: Double(24.0),
       selectedServices: ['Regular Cut', 'Brow Cleaner add-on']
@@ -150,7 +150,7 @@ const populateDb = async db => {
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 31, 2018 13:30:00'),
+      date: new Date('November 30, 2018 13:30:00'),
       totalDuration: 30,
       totalPrice: Double(24.0),
       selectedServices: ['Regular Cut', 'Brow Cleaner add-on']
@@ -158,7 +158,7 @@ const populateDb = async db => {
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 31, 2018 14:30:00'),
+      date: new Date('November 30, 2018 14:30:00'),
       totalDuration: 30,
       totalPrice: Double(24.0),
       selectedServices: ['Regular Cut', 'Brow Cleaner add-on']
@@ -166,7 +166,7 @@ const populateDb = async db => {
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 31, 2018 15:30:00'),
+      date: new Date('November 30, 2018 15:30:00'),
       totalDuration: 30,
       totalPrice: Double(24.0),
       selectedServices: ['Regular Cut', 'Brow Cleaner add-on']
@@ -174,7 +174,7 @@ const populateDb = async db => {
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 31, 2018 10:30:00'),
+      date: new Date('November 30, 2018 10:30:00'),
       totalDuration: 30,
       totalPrice: Double(24.0),
       selectedServices: ['Regular Cut', 'Brow Cleaner add-on']
@@ -182,7 +182,7 @@ const populateDb = async db => {
     {
       barberId: selectRandomId(barbers),
       customerId: selectRandomId(customers),
-      date: new Date('October 31, 2018 11:30:00'),
+      date: new Date('November 30, 2018 11:30:00'),
       totalDuration: 30,
       totalPrice: Double(24.0),
       selectedServices: ['Regular Cut', 'Brow Cleaner add-on']
