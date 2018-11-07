@@ -48,7 +48,11 @@ const initializeDb = (err, client) => {
     secret: process.env.SESSION_SECRET,
     store: new MongoStore({db}),
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      secure: true, // ensures the browser only sends the cookie over HTTPS;
+      httpOnly: true // ensures the cookie is sent only over HTTP(S), not client JavaScript;
+    }
   }));
 
   passport.serializeUser(function(barber, done) {
