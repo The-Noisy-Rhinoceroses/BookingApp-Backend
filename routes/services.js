@@ -33,7 +33,7 @@ const servicesRouter = db => {
       }
     };
 
-    const url = `square-commerce-v1://payment/create?data=${JSON.stringify(dataParameter)}`;
+    const url = `square-commerce-v1://payment/create?data=${encodeURIComponent(JSON.stringify(dataParameter))}`;
     res.json(url)
   });
 
@@ -43,7 +43,9 @@ const servicesRouter = db => {
   });
 
   router.get('/success', (req, res, next) => {
-    console.log('GET LINE 51!');
+    const {data} = req.query
+    console.log(JSON.parse(data))
+    res.redirect('http://192.168.1.168:3000/')
   });
 
   return router;

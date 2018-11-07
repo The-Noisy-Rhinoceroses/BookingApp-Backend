@@ -2,7 +2,9 @@
 
 // Module dependencies;
 const app = require('../app');
-const http = require('http');
+const https = require('https');
+const path = require('path');
+const fs = require('fs')
 const { normalizePort, onError, onListening } = require('./config');
 
 // Get port from environment and store in Express;
@@ -10,7 +12,13 @@ const port = normalizePort(process.env.PORT || '1337');
 app.set('port', port);
 
 // Create HTTP server;
-const server = http.createServer(app);
+const server = https.createServer(
+  {
+    key: fs.readFileSync(path.resolve(__dirname, '../server.key'), 'utf8'),
+    cert: fs.readFileSync(path.resolve(__dirname, '../server.cert'), 'utf8')
+  },
+  app
+);
 
 // Listen on provided port, on all network interfaces with event listeners and event handlers;
 server.listen(port);
