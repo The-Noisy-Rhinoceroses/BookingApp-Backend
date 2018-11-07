@@ -50,8 +50,8 @@ const initializeDb = (err, client) => {
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: true, // ensures the browser only sends the cookie over HTTPS;
-      httpOnly: true // ensures the cookie is sent only over HTTP(S), not client JavaScript;
+      secure: true, // ensures the browser only sends the cookie over HTTPS (protects against MITM attacks);
+      httpOnly: true // ensures the cookie is sent only over HTTP(S), not via client-side JavaScript (protects against XSS attacks);
     }
   }));
 
