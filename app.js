@@ -1,5 +1,5 @@
 // Grab environment variables;
-// require('./secrets');
+require('./secrets');
 
 // Module dependencies;
 const express = require('express');
